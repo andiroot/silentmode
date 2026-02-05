@@ -1,0 +1,88 @@
+version: '3.8'
+
+x-client-build: &client-build
+  context: .
+  dockerfile: client/Dockerfile
+
+services:
+  server:
+    build: 
+      context: .
+      dockerfile: server/Dockerfile
+    container_name: server
+    volumes:
+      - ./server-data:/app/server-data
+      - ./proto:/app/proto
+    networks:
+      - app-network
+    ports:
+      - "8080:8080"  
+      - "50051:50051"
+  client1:
+    build: *client-build
+    container_name: client1
+    hostname: client1
+    environment:
+      - CLIENT_ID=client1
+      - SERVER_ADDRESS=server:50052
+    volumes:
+      - ./client-data/client1:/app/client-data
+      - ./proto:/app/proto
+    networks:
+      - app-network
+
+  client2:
+    build: *client-build
+    container_name: client2
+    hostname: client2
+    environment:
+      - CLIENT_ID=client2
+      - SERVER_ADDRESS=server:50053
+    volumes:
+      - ./client-data/client2:/app/client-data
+      - ./proto:/app/proto
+    networks:
+      - app-network
+
+  client3:
+    build: *client-build
+    container_name: client3
+    hostname: client3
+    environment:
+      - CLIENT_ID=client3
+      - SERVER_ADDRESS=server:50054
+    volumes:
+      - ./client-data/client3:/app/client-data
+      - ./proto:/app/proto
+    networks:
+      - app-network
+
+  client4:
+    build: *client-build
+    container_name: client4
+    hostname: client4
+    environment:
+      - CLIENT_ID=client4
+      - SERVER_ADDRESS=server:50055
+    volumes:
+      - ./client-data/client4:/app/client-data
+      - ./proto:/app/proto
+    networks:
+      - app-network
+
+  client5:
+    build: *client-build
+    container_name: client5
+    hostname: client5
+    environment:
+      - CLIENT_ID=client5
+      - SERVER_ADDRESS=server:50056
+    volumes:
+      - ./client-data/client5:/app/client-data
+      - ./proto:/app/proto
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,0 +1,20 @@
+syntax = "proto3";
+package silentmode;
+option go_package = "silentmode/proto";
+
+message DownloadCommand {
+    string filename = 1;
+}
+
+message FilePayload {
+    string client_id = 1;
+    bytes data = 2;
+    bool is_complete = 3;
+    string error = 4;
+}
+
+service FileService {
+    // Client opens this and waits for commands. 
+    // It returns a stream of file chunks back to the server.
+    rpc ConnectAndListen(stream FilePayload) returns (stream DownloadCommand);
+}
